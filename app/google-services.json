@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "870617497198",
+    "project_id": "kaamly-9ccb9",
+    "storage_bucket": "kaamly-9ccb9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870617497198:android:651e31b2225bb361c1307f",
+        "android_client_info": {
+          "package_name": "com.jaydeep.kaamly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2HcGCWnTtBuwYY_HfY6j4-9W6OUY58y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

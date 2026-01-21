@@ -1,0 +1,49 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if file is an image
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    // Helper function to check file size (max 5MB)
+    function isValidSize() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+    
+    // Profile photos
+    match /profile_photos/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      request.auth.uid == userId && 
+                      isImage() && 
+                      isValidSize();
+      allow delete: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Task completion photos
+    match /task_photos/{taskId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && 
+                      isImage() && 
+                      isValidSize();
+      allow delete: if isAuthenticated();
+    }
+    
+    // Aadhaar verification photos (mock)
+    match /verification_photos/{workerId}/{fileName} {
+      allow read: if isAuthenticated() && request.auth.uid == workerId;
+      allow write: if isAuthenticated() && 
+                      request.auth.uid == workerId && 
+                      isImage() && 
+                      isValidSize();
+      allow delete: if isAuthenticated() && request.auth.uid == workerId;
+    }
+  }
+}
