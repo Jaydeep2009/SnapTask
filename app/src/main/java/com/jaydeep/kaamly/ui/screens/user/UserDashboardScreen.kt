@@ -235,8 +235,9 @@ fun UserDashboardScreen(
                             onViewBids = { onNavigateToBidList(task.id) },
                             onApproveCompletion = if (task.completionRequested && task.state == TaskState.IN_PROGRESS) {
                                 {
-                                    // Approve completion and release payment
-                                    taskViewModel.approveTaskAndReleasePayment(task.id, task.assignedWorkerId ?: "", task.budget)
+                                    // Approve completion and release payment using the accepted bid amount
+                                    val paymentAmount = task.acceptedBidAmount ?: task.budget
+                                    taskViewModel.approveTaskAndReleasePayment(task.id, task.assignedWorkerId ?: "", paymentAmount)
                                 }
                             } else null
                         )
@@ -645,9 +646,10 @@ private fun TaskPaymentTimeline(
         Spacer(modifier = Modifier.height(12.dp))
         
         // Timeline Step 1: Payment Made
+        val paymentAmount = task.acceptedBidAmount ?: task.budget
         TimelineStep(
             title = "Payment Made",
-            description = "₹${task.budget} paid to escrow",
+            description = "₹$paymentAmount paid to escrow",
             isCompleted = isPaid,
             isActive = false
         )

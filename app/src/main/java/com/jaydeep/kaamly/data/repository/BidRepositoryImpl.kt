@@ -120,12 +120,13 @@ class BidRepositoryImpl @Inject constructor(
             val bidRef = firestore.collection(BIDS_COLLECTION).document(bidId)
             batch.update(bidRef, "status", BidStatus.ACCEPTED.name)
             
-            // Update task: assign worker and change state to IN_PROGRESS
+            // Update task: assign worker, store bid amount, and change state to IN_PROGRESS
             val taskRef = firestore.collection(TASKS_COLLECTION).document(bid.taskId)
             batch.update(
                 taskRef,
                 mapOf(
                     "assignedWorkerId" to bid.workerId,
+                    "acceptedBidAmount" to bid.amount,
                     "state" to TaskState.IN_PROGRESS.name,
                     "updatedAt" to System.currentTimeMillis()
                 )

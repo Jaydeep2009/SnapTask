@@ -68,7 +68,7 @@ fun LoginScreen(
         ) {
             // App title
             Text(
-                text = "Kaamly",
+                text = "SnapTask",
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.primary
             )

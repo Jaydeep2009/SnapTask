@@ -8,6 +8,7 @@ import com.jaydeep.kaamly.data.repository.AIRepository
 import com.jaydeep.kaamly.data.repository.BaseRepository
 import com.jaydeep.kaamly.data.repository.LocationRepository
 import com.jaydeep.kaamly.data.repository.TaskRepository
+import com.jaydeep.kaamly.data.repository.WalletRepository
 import com.jaydeep.kaamly.ui.viewmodel.ErrorState
 import com.jaydeep.kaamly.ui.viewmodel.TaskViewModel
 import io.mockk.coEvery
@@ -41,6 +42,7 @@ class RetryLogicTest {
     private lateinit var taskRepository: TaskRepository
     private lateinit var aiRepository: AIRepository
     private lateinit var locationRepository: LocationRepository
+    private lateinit var walletRepository: WalletRepository
     private lateinit var taskViewModel: TaskViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -50,6 +52,7 @@ class RetryLogicTest {
         taskRepository = mockk(relaxed = true)
         aiRepository = mockk(relaxed = true)
         locationRepository = mockk(relaxed = true)
+        walletRepository = mockk(relaxed = true)
         
         // Setup default mock behaviors
         coEvery { taskRepository.getUserTasks(any()) } returns flowOf(emptyList())
@@ -79,7 +82,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry
@@ -100,7 +103,7 @@ class RetryLogicTest {
             taskRepository.getTask(any()) 
         } returns BaseRepository.Result.Error(IOException("Network error"))
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry (max 3 attempts)
@@ -125,7 +128,7 @@ class RetryLogicTest {
             IllegalArgumentException("Validation error: Invalid state transition")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Update task state with invalid data
@@ -158,7 +161,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry
@@ -197,7 +200,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry
@@ -233,7 +236,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry
@@ -264,7 +267,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task with retry
@@ -296,7 +299,7 @@ class RetryLogicTest {
             taskRepository.getTask(any()) 
         } returns BaseRepository.Result.Error(IOException("Connection failed"))
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task
@@ -322,7 +325,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task
@@ -348,7 +351,7 @@ class RetryLogicTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Load task
@@ -382,3 +385,4 @@ class RetryLogicTest {
         )
     }
 }
+

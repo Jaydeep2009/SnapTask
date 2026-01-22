@@ -9,6 +9,7 @@ import com.jaydeep.kaamly.data.repository.AIRepository
 import com.jaydeep.kaamly.data.repository.BaseRepository
 import com.jaydeep.kaamly.data.repository.LocationRepository
 import com.jaydeep.kaamly.data.repository.TaskRepository
+import com.jaydeep.kaamly.data.repository.WalletRepository
 import com.jaydeep.kaamly.ui.viewmodel.ErrorState
 import com.jaydeep.kaamly.ui.viewmodel.TaskViewModel
 import io.mockk.coEvery
@@ -39,6 +40,7 @@ class ValidationErrorTest {
     private lateinit var taskRepository: TaskRepository
     private lateinit var aiRepository: AIRepository
     private lateinit var locationRepository: LocationRepository
+    private lateinit var walletRepository: WalletRepository
     private lateinit var taskViewModel: TaskViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -48,6 +50,7 @@ class ValidationErrorTest {
         taskRepository = mockk(relaxed = true)
         aiRepository = mockk(relaxed = true)
         locationRepository = mockk(relaxed = true)
+        walletRepository = mockk(relaxed = true)
         
         // Setup default mock behaviors
         coEvery { taskRepository.getUserTasks(any()) } returns flowOf(emptyList())
@@ -72,7 +75,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Title is required")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with missing title
@@ -102,7 +105,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Budget must be positive")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with negative budget
@@ -132,7 +135,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Date must be in the future")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with past date
@@ -162,7 +165,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Description is required")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with empty description
@@ -194,7 +197,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Description cannot be empty")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Generate task with empty description
@@ -223,7 +226,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Description too short")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Generate task with very short description
@@ -254,7 +257,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Invalid state transition from COMPLETED to OPEN")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Try invalid state transition
@@ -286,7 +289,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: File must be an image")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Upload invalid file
@@ -317,7 +320,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: File size must be less than 5MB")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Upload large file
@@ -350,7 +353,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: field 'title' constraint violation")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with validation error
@@ -378,7 +381,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Title is required, Budget must be positive")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: Create task with multiple validation errors
@@ -409,7 +412,7 @@ class ValidationErrorTest {
             IllegalArgumentException("Validation failed: Title is required")
         )
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         val task = createMockTask(title = "")
@@ -448,7 +451,7 @@ class ValidationErrorTest {
             }
         }
 
-        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository)
+        taskViewModel = TaskViewModel(taskRepository, aiRepository, locationRepository, walletRepository)
         advanceUntilIdle()
 
         // When: First attempt fails
@@ -501,3 +504,4 @@ class ValidationErrorTest {
         )
     }
 }
+

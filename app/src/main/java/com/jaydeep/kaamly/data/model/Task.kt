@@ -14,6 +14,7 @@ data class Task(
     val scheduledDate: Long = 0L,
     val scheduledTime: String = "",
     val budget: Double = 0.0,
+    val acceptedBidAmount: Double? = null, // The actual bid amount that was accepted
     val isInstantJob: Boolean = false,
     val state: TaskState = TaskState.OPEN,
     val assignedWorkerId: String? = null,
